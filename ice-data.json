@@ -4,7 +4,7 @@
   "dataset": "arrests-latest",
   "dataThrough": "2026-03-10",
   "latestAvailableDate": "2026-03-10",
-  "latestAvailableCount": null,
-  "status": "awaiting_calculation",
-  "note": "The official ICE arrests dataset contains approximately 713,000 records through March 10, 2026. The daily count must be calculated from the underlying records."
+  "latestAvailableCount": 1,
+  "status": "latest_available_day",
+  "note": "Count calculated from the official ICE arrests dataset."
 }
