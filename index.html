@@ -4,7 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>U.S. Enforcement Tracker</title>
+  <title>Today — Police Killings & ICE Arrests</title>
+
+  <meta
+    name="description"
+    content="Latest available counts of people killed by police and ICE arrests in the United States."
+  >
 
   <style>
     * {
@@ -18,108 +23,114 @@
       color: #111;
     }
 
-    header {
-      background: #111;
-      color: white;
-      padding: 28px 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0 0 8px;
-      font-size: 30px;
-    }
-
-    header p {
-      margin: 0;
-      color: #ccc;
-      font-size: 15px;
-    }
-
-    main {
+    .container {
       max-width: 1000px;
-      margin: 35px auto;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    header {
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin: 0 0 10px;
+      letter-spacing: -2px;
+    }
+
+    .subtitle {
+      font-size: 19px;
+      color: #555;
+      line-height: 1.5;
+      max-width: 700px;
+    }
+
+    .updated {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #777;
     }
 
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
     }
 
     .card {
       background: white;
-      border-radius: 12px;
-      padding: 28px;
+      border-radius: 14px;
+      padding: 30px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     }
 
-    .card h2 {
-      margin-top: 0;
-      font-size: 19px;
+    .label {
+      font-size: 15px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #666;
+      margin-bottom: 15px;
     }
 
     .number {
-      font-size: 52px;
+      font-size: 64px;
       font-weight: bold;
-      margin: 20px 0 8px;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .description {
+      font-size: 18px;
+      line-height: 1.4;
     }
 
     .date {
-      font-size: 15px;
-      color: #555;
-      margin-bottom: 18px;
-    }
-
-    .note {
+      margin-top: 15px;
       font-size: 14px;
-      line-height: 1.5;
-      color: #555;
-      border-top: 1px solid #ddd;
-      padding-top: 16px;
+      color: #666;
     }
 
     .source {
-      margin-top: 16px;
+      margin-top: 20px;
       font-size: 13px;
-    }
-
-    .source a {
-      color: #0645ad;
-    }
-
-    .updated {
-      text-align: center;
-      margin-top: 30px;
-      color: #666;
-      font-size: 13px;
-    }
-
-    .warning {
-      background: #fff8dc;
-      border: 1px solid #ead78b;
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 25px;
-      font-size: 14px;
+      color: #777;
       line-height: 1.5;
     }
 
-    footer {
-      text-align: center;
-      padding: 35px 20px;
-      color: #777;
-      font-size: 13px;
+    .source a {
+      color: #333;
     }
 
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 25px;
+    .note {
+      margin-top: 30px;
+      padding: 20px;
+      background: #fff;
+      border-left: 4px solid #999;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 13px;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 700px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 38px;
       }
 
       .number {
-        font-size: 44px;
+        font-size: 52px;
       }
     }
   </style>
@@ -127,202 +138,95 @@
 
 <body>
 
-<header>
-  <h1>U.S. Enforcement Tracker</h1>
-  <p>Tracking publicly available data on police killings and ICE arrests</p>
-</header>
+  <div class="container">
 
-<main>
+    <header>
+      <h1>Today</h1>
 
-  <div class="warning">
-    <strong>Important:</strong>
-    These are not necessarily real-time counts. Both sources have publication
-    delays. The date shown with each number tells you how current the underlying
-    data actually are.
+      <div class="subtitle">
+        Tracking the latest available data on police killings
+        and ICE arrests in the United States.
+      </div>
+
+      <div class="updated" id="updated">
+        Loading data...
+      </div>
+    </header>
+
+    <main class="cards">
+
+      <section class="card">
+        <div class="label">Police killings</div>
+
+        <div class="number" id="police-number">
+          —
+        </div>
+
+        <div class="description">
+          people killed by police on the latest available day.
+        </div>
+
+        <div class="date" id="police-date">
+          Loading...
+        </div>
+
+        <div class="source">
+          Source:
+          <a
+            href="https://mappingpoliceviolence.org/"
+            target="_blank"
+            rel="noopener"
+          >
+            Mapping Police Violence
+          </a>
+        </div>
+      </section>
+
+
+      <section class="card">
+        <div class="label">ICE arrests</div>
+
+        <div class="number" id="ice-number">
+          —
+        </div>
+
+        <div class="description">
+          ICE arrests on the latest available day.
+        </div>
+
+        <div class="date" id="ice-date">
+          Loading...
+        </div>
+
+        <div class="source">
+          Source:
+          <a
+            href="https://deportationdata.org/data/ice.html"
+            target="_blank"
+            rel="noopener"
+          >
+            Deportation Data Project
+          </a>
+        </div>
+      </section>
+
+    </main>
+
+    <div class="note">
+      <strong>Important:</strong>
+      These are the latest available counts from the underlying public
+      datasets. They are not real-time government feeds. Data can be
+      revised or updated by the organizations that collect and publish it.
+    </div>
+
+    <footer>
+      Data sources are credited above. This project does not claim to
+      independently verify the underlying records.
+    </footer>
+
   </div>
 
-  <div class="cards">
-
-    <!-- POLICE -->
-    <section class="card">
-      <h2>Police killings</h2>
-
-      <div id="police-number" class="number">Loading...</div>
-
-      <div id="police-date" class="date">
-        Checking latest available data...
-      </div>
-
-      <div id="police-note" class="note"></div>
-
-      <div class="source">
-        Source:
-        <a
-          href="https://mappingpoliceviolence.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Mapping Police Violence
-        </a>
-      </div>
-    </section>
-
-    <!-- ICE -->
-    <section class="card">
-      <h2>ICE arrests</h2>
-
-      <div id="ice-number" class="number">Loading...</div>
-
-      <div id="ice-date" class="date">
-        Checking latest available data...
-      </div>
-
-      <div id="ice-note" class="note"></div>
-
-      <div class="source">
-        Source:
-        <a
-          href="https://deportationdata.org/data/ice.html"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Deportation Data Project
-        </a>
-      </div>
-    </section>
-
-  </div>
-
-  <div id="updated" class="updated"></div>
-
-</main>
-
-<footer>
-  This site reports data from publicly available research datasets.
-  It does not claim to provide a real-time government count.
-</footer>
-
-<script>
-async function loadData() {
-  try {
-    const response = await fetch("/api/status");
-
-    if (!response.ok) {
-      throw new Error("API request failed");
-    }
-
-    const data = await response.json();
-
-    /*
-     * POLICE
-     */
-    const police = data.police || {};
-
-    const policeNumber =
-      document.getElementById("police-number");
-
-    const policeDate =
-      document.getElementById("police-date");
-
-    const policeNote =
-      document.getElementById("police-note");
-
-    if (police.todayCount !== null &&
-        police.todayCount !== undefined) {
-
-      policeNumber.textContent = police.todayCount;
-
-      policeDate.textContent =
-        police.date
-          ? "Data for " + police.date
-          : "Latest available";
-
-    } else if (police.value !== null &&
-               police.value !== undefined) {
-
-      policeNumber.textContent = police.value;
-
-      policeDate.textContent =
-        police.date
-          ? "Data for " + police.date
-          : "Latest available";
-
-    } else {
-
-      policeNumber.textContent = "—";
-      policeDate.textContent = "Latest available data";
-    }
-
-    policeNote.textContent =
-      police.note ||
-      "Mapping Police Violence maintains a publication delay so incidents can be reviewed before being added to the public dataset.";
-
-    /*
-     * ICE
-     */
-    const ice = data.ice || {};
-
-    const iceNumber =
-      document.getElementById("ice-number");
-
-    const iceDate =
-      document.getElementById("ice-date");
-
-    const iceNote =
-      document.getElementById("ice-note");
-
-    if (ice.value !== null &&
-        ice.value !== undefined) {
-
-      iceNumber.textContent = ice.value;
-
-    } else {
-
-      iceNumber.textContent = "—";
-    }
-
-    if (ice.dataThrough) {
-
-      iceDate.textContent =
-        "Data through " + ice.dataThrough;
-
-    } else {
-
-      iceDate.textContent =
-        ice.label || "Latest available data";
-    }
-
-    iceNote.textContent =
-      ice.note ||
-      "ICE does not publish a public nationwide real-time arrest feed.";
-
-    /*
-     * API update time
-     */
-    if (data.updated) {
-
-      document.getElementById("updated").textContent =
-        "Data checked: " +
-        new Date(data.updated).toLocaleString();
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-    document.getElementById("police-number").textContent = "—";
-    document.getElementById("ice-number").textContent = "—";
-
-    document.getElementById("police-date").textContent =
-      "Unable to load data";
-
-    document.getElementById("ice-date").textContent =
-      "Unable to load data";
-  }
-}
-
-loadData();
-</script>
+  <script src="/police.js"></script>
 
 </body>
 </html>
