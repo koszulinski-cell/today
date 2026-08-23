@@ -1,7 +1,5 @@
-name = "today"
-main = "worker.js"
-compatibility_date = "2026-08-23"
+name = "us-enforcement-tracker"
 
-[assets]
-directory = "."
-binding = "ASSETS"
+main = "worker.js"
+
+compatibility_date = "2026-08-23"
