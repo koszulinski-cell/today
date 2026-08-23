@@ -1,11 +1,39 @@
+const ICE_DATA_URL =
+  "https://raw.githubusercontent.com/deportationdata/ice/main/data/arrests-latest.parquet";
+
+async function getIceCount() {
+  /*
+   * The official Deportation Data Project file is a Parquet file
+   * containing one row per ICE arrest.
+   *
+   * Cloudflare Workers cannot natively read Parquet files, so for now
+   * we expose the verified data coverage and keep the actual count
+   * explicitly unavailable rather than inventing a number.
+   */
+
+  return {
+    date: "2026-03-10",
+    count: null,
+    status: "data_available_count_not_yet_calculated",
+    source: "Deportation Data Project",
+    sourceUrl: "https://deportationdata.org/data/ice.html",
+    dataUrl: ICE_DATA_URL
+  };
+}
+
+
 export default {
   async fetch(request, env) {
+
     const url = new URL(request.url);
 
     /*
-     * API STATUS
+     * /api/status
      */
     if (url.pathname === "/api/status") {
+
+      const ice = await getIceCount();
+
       return new Response(
         JSON.stringify({
           updated: new Date().toISOString(),
@@ -13,20 +41,12 @@ export default {
           police: {
             source: "Mapping Police Violence",
             sourceUrl: "https://mappingpoliceviolence.org/",
-            dataLastUpdated: "2026-08-05",
             latestAvailableDate: "2026-08-07",
-            latestAvailableCount: 1,
+            count: null,
             status: "latest_available_day"
           },
 
-          ice: {
-            source: "Deportation Data Project",
-            sourceUrl: "https://deportationdata.org/data/ice.html",
-            dataThrough: "2026-03-10",
-            status: "latest_available_day",
-            note:
-              "The ICE arrests dataset currently runs through March 10, 2026. The site should calculate the daily count from the underlying dataset rather than invent a real-time number."
-          }
+          ice
         }),
         {
           headers: {
@@ -38,10 +58,12 @@ export default {
       );
     }
 
+
     /*
-     * HEALTH CHECK
+     * /api/health
      */
     if (url.pathname === "/api/health") {
+
       return new Response(
         JSON.stringify({
           ok: true,
@@ -58,8 +80,9 @@ export default {
       );
     }
 
+
     /*
-     * Serve the website.
+     * Website
      */
     if (env.ASSETS) {
       return env.ASSETS.fetch(request);
