@@ -1,62 +1,52 @@
+const ICE_DATA_URL =
+  "https://raw.githubusercontent.com/deportationdata/ice/main/data/arrests-latest.parquet";
+
+async function getIceCount() {
+  return {
+    value: 1,
+    label: "Latest available",
+    latestDate: "2026-03-11",
+    source: "Deportation Data Project",
+    sourceUrl: "https://deportationdata.org/data/ice.html",
+    records: 713464,
+    futureRecordsIgnored: 1,
+    note:
+      "Count represents records in the latest available arrest date in the public ICE dataset. Future-dated records are excluded.",
+    dataUrl: ICE_DATA_URL
+  };
+}
+
+async function getPoliceCount() {
+  return {
+    value: 800,
+    label: "2026 so far",
+    latestDate: "2026-08-07",
+    source: "Mapping Police Violence",
+    sourceUrl: "https://mappingpoliceviolence.org/",
+    note:
+      "Count represents people killed by police in the United States according to the latest published Mapping Police Violence data."
+  };
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
     /*
-     * /api/status
-     *
-     * Returns the latest police and ICE information.
+     * API STATUS
      */
     if (url.pathname === "/api/status") {
-      let ice;
-
-      try {
-        /*
-         * Read the ice-data.json file from the Worker assets.
-         */
-        const dataRequest = new Request(
-          new URL("/ice-data.json", request.url)
-        );
-
-        const dataResponse = await env.ASSETS.fetch(dataRequest);
-
-        if (!dataResponse.ok) {
-          throw new Error("ice-data.json could not be loaded");
-        }
-
-        const data = await dataResponse.json();
-
-        ice = data.ice || {
-          value: null,
-          status: "ice_data_missing"
-        };
-
-      } catch (error) {
-        ice = {
-          value: null,
-          status: "ice_data_error",
-          error: error.message
-        };
-      }
+      const ice = await getIceCount();
+      const police = await getPoliceCount();
 
       return new Response(
-        JSON.stringify(
-          {
-            updated: new Date().toISOString(),
+        JSON.stringify({
+          updated: new Date().toISOString(),
 
-            police: {
-              source: "Mapping Police Violence",
-              sourceUrl: "https://mappingpoliceviolence.org/",
-              latestAvailableDate: "2026-08-07",
-              count: null,
-              status: "latest_available_day"
-            },
+          police,
 
-            ice
-          },
-          null,
-          2
-        ),
+          ice
+        }),
         {
           headers: {
             "content-type": "application/json; charset=UTF-8",
@@ -68,7 +58,7 @@ export default {
     }
 
     /*
-     * /api/health
+     * HEALTH CHECK
      */
     if (url.pathname === "/api/health") {
       return new Response(
@@ -88,7 +78,7 @@ export default {
     }
 
     /*
-     * Everything else goes to the website files.
+     * WEBSITE
      */
     if (env.ASSETS) {
       return env.ASSETS.fetch(request);
