@@ -1,29 +1,28 @@
+import { getPoliceData } from "./police.js";
+
 export default {
   async fetch(request, env) {
+
     const url = new URL(request.url);
 
     /*
-      Temporary API.
-
-      This gives our website a predictable place to ask:
-      "What are the current numbers?"
-
-      We are deliberately NOT inventing a live number.
-      The dates below describe the underlying source data.
-    */
+     * API endpoint
+     *
+     * Visiting:
+     *
+     * /api/status
+     *
+     * will return our current data.
+     */
 
     if (url.pathname === "/api/status") {
-      const response = {
-        updated: "2026-08-23",
 
-        police: {
-          value: null,
-          label: "Latest available",
-          source: "Mapping Police Violence",
-          sourceUrl: "https://mappingpoliceviolence.org/",
-          note:
-            "The public MPV dataset is not currently updated through today, so a verified August 23 count is not available."
-        },
+      const police = await getPoliceData();
+
+      const response = {
+        updated: new Date().toISOString(),
+
+        police: police,
 
         ice: {
           value: null,
@@ -32,22 +31,26 @@ export default {
           sourceUrl: "https://deportationdata.org/data/ice.html",
           dataThrough: "2026-03-10",
           note:
-            "ICE does not publish a public nationwide real-time arrest feed. The latest individual-level dataset currently runs through March 10, 2026."
+            "ICE does not publish a public nationwide real-time arrest feed."
         }
       };
 
-      return new Response(JSON.stringify(response, null, 2), {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+      return new Response(
+        JSON.stringify(response, null, 2),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
         }
-      });
+      );
     }
 
-    return new Response("TODAY API is running.", {
-      headers: {
-        "Content-Type": "text/plain"
-      }
-    });
+    /*
+     * Anything that isn't /api/status gets
+     * the normal website.
+     */
+
+    return env.ASSETS.fetch(request);
   }
 };
