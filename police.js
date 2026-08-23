@@ -1,32 +1,74 @@
-// police.js
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
 
-const POLICE_SOURCE =
-  "https://mappingpoliceviolence.org/";
+    /*
+     * API STATUS
+     */
+    if (url.pathname === "/api/status") {
+      return new Response(
+        JSON.stringify({
+          updated: new Date().toISOString(),
 
-export async function getPoliceStatus() {
+          police: {
+            source: "Mapping Police Violence",
+            sourceUrl: "https://mappingpoliceviolence.org/",
+            dataLastUpdated: "2026-08-05",
+            latestAvailableDate: "2026-08-07",
+            latestAvailableCount: 1,
+            status: "latest_available_day"
+          },
 
-  /*
-   * This is the value you already confirmed is working.
-   *
-   * We keep the API structure simple so the website doesn't break.
-   *
-   * IMPORTANT:
-   * This number represents the latest published daily count,
-   * not necessarily today's actual count.
-   */
+          ice: {
+            source: "Deportation Data Project",
+            sourceUrl: "https://deportationdata.org/data/ice.html",
+            dataThrough: "2026-03-10",
+            status: "latest_available_day",
+            note:
+              "The ICE arrests dataset currently runs through March 10, 2026. The site should calculate the daily count from the underlying dataset rather than invent a real-time number."
+          }
+        }),
+        {
+          headers: {
+            "content-type": "application/json; charset=UTF-8",
+            "cache-control": "no-store",
+            "access-control-allow-origin": "*"
+          }
+        }
+      );
+    }
 
-  const todayCount = 2;
+    /*
+     * HEALTH CHECK
+     */
+    if (url.pathname === "/api/health") {
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          service: "today",
+          time: new Date().toISOString()
+        }),
+        {
+          headers: {
+            "content-type": "application/json; charset=UTF-8",
+            "cache-control": "no-store",
+            "access-control-allow-origin": "*"
+          }
+        }
+      );
+    }
 
-  return {
-    source: "Mapping Police Violence",
-    sourceUrl: POLICE_SOURCE,
+    /*
+     * Serve the website.
+     */
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
+    }
 
-    todayCount: todayCount,
-
-    label: "Latest published daily count",
-
-    note:
-      "Mapping Police Violence maintains a publication lag so incidents can be reviewed before publication. " +
-      "The displayed number is therefore a published count, not a guaranteed real-time count."
-  };
-}
+    return new Response("Today is running.", {
+      headers: {
+        "content-type": "text/plain; charset=UTF-8"
+      }
+    });
+  }
+};
