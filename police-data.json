@@ -1,5 +1,20 @@
 {
-  "source": "Mapping Police Violence",
-  "sourceLastUpdated": "2026-08-07",
-  "records": []
+  "siteUpdated": "2026-08-23",
+  "police": {
+    "source": "Mapping Police Violence",
+    "sourceUrl": "https://mappingpoliceviolence.org/",
+    "dataLastUpdated": "2026-08-05",
+    "date": "2026-08-07",
+    "count": 1,
+    "status": "latest_available_day"
+  },
+  "ice": {
+    "source": "Deportation Data Project",
+    "sourceUrl": "https://deportationdata.org/data/ice.html",
+    "dataThrough": "2026-03-10",
+    "date": "2026-03-10",
+    "count": null,
+    "status": "latest_available_day",
+    "note": "ICE arrests data is available through March 10, 2026. The daily count is calculated from the underlying arrests dataset."
+  }
 }
