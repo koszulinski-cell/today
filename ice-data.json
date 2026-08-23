@@ -1,1 +1,10 @@
-
+{
+  "source": "Deportation Data Project",
+  "sourceUrl": "https://deportationdata.org/data/ice.html",
+  "dataset": "arrests-latest",
+  "dataThrough": "2026-03-10",
+  "latestAvailableDate": "2026-03-10",
+  "latestAvailableCount": null,
+  "status": "awaiting_calculation",
+  "note": "The official ICE arrests dataset contains approximately 713,000 records through March 10, 2026. The daily count must be calculated from the underlying records."
+}
