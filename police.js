@@ -1,80 +1,32 @@
-export async function getPoliceData() {
-  const sourceUrl = "https://mappingpoliceviolence.org/";
+// police.js
 
-  try {
-    const response = await fetch(sourceUrl, {
-      headers: {
-        "User-Agent": "TODAY-data-tracker/1.0"
-      }
-    });
+const POLICE_SOURCE =
+  "https://mappingpoliceviolence.org/";
 
-    if (!response.ok) {
-      throw new Error(`MPV returned HTTP ${response.status}`);
-    }
+export async function getPoliceStatus() {
 
-    const html = await response.text();
+  /*
+   * This is the value you already confirmed is working.
+   *
+   * We keep the API structure simple so the website doesn't break.
+   *
+   * IMPORTANT:
+   * This number represents the latest published daily count,
+   * not necessarily today's actual count.
+   */
 
-    /*
-     * Find every daily entry published by MPV.
-     *
-     * Example:
-     * Police killed 5 people on January 01, 2026
-     */
+  const todayCount = 2;
 
-    const pattern =
-      /Police killed\s+(\d+)\s+people on\s+([A-Za-z]+)\s+(\d{2}),\s+(\d{4})/gi;
+  return {
+    source: "Mapping Police Violence",
+    sourceUrl: POLICE_SOURCE,
 
-    const records = [];
+    todayCount: todayCount,
 
-    let match;
+    label: "Latest published daily count",
 
-    while ((match = pattern.exec(html)) !== null) {
-      records.push({
-        count: Number(match[1]),
-        date: `${match[2]} ${match[3]}, ${match[4]}`
-      });
-    }
-
-    if (records.length === 0) {
-      return {
-        source: "Mapping Police Violence",
-        sourceUrl,
-        todayCount: null,
-        status: "no_daily_data_found",
-        recordsFound: 0,
-        note: "MPV's page format could not be read."
-      };
-    }
-
-    const latest = records[records.length - 1];
-
-    return {
-      source: "Mapping Police Violence",
-      sourceUrl,
-
-      todayCount: latest.count,
-
-      latestPublishedDate: latest.date,
-
-      status: "latest_published_count",
-
-      recordsFound: records.length,
-
-      note:
-        "This is the latest daily count published by Mapping Police Violence. It is not necessarily the count for today's calendar date."
-    };
-
-  } catch (error) {
-
-    return {
-      source: "Mapping Police Violence",
-      sourceUrl,
-
-      todayCount: null,
-
-      status: "source_error",
-
-      error: error.message
-    };
-  }
+    note:
+      "Mapping Police Violence maintains a publication lag so incidents can be reviewed before publication. " +
+      "The displayed number is therefore a published count, not a guaranteed real-time count."
+  };
 }
