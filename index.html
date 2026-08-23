@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>TODAY — Government Enforcement Tracker</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -26,25 +33,26 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
-      padding: 35px 20px 60px;
+      padding: 40px 20px 70px;
     }
 
     header {
-      margin-bottom: 30px;
+      margin-bottom: 35px;
     }
 
     h1 {
-      font-size: 52px;
-      letter-spacing: -3px;
+      font-size: 56px;
+      letter-spacing: -4px;
       margin: 0;
     }
 
     .subtitle {
       color: #666;
-      margin-top: 5px;
       font-size: 17px;
+      margin-top: 6px;
+      line-height: 1.5;
     }
 
     .date {
@@ -54,43 +62,72 @@
     }
 
     .cards {
+
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 20px;
     }
 
     @media(max-width: 700px) {
+
       .cards {
         grid-template-columns: 1fr;
       }
+
     }
 
     .card {
+
       background: white;
+
       border: 1px solid #ddd;
-      border-radius: 18px;
-      padding: 25px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.05);
+
+      border-radius: 20px;
+
+      padding: 28px;
+
+      box-shadow:
+        0 4px 15px rgba(0,0,0,.05);
     }
 
     .category {
-      font-size: 13px;
-      font-weight: 700;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
       text-transform: uppercase;
-      letter-spacing: .06em;
+
+      letter-spacing: .08em;
+
+      color: #777;
     }
 
     .title {
-      font-size: 20px;
+
+      font-size: 21px;
+
       font-weight: 700;
-      margin-top: 7px;
+
+      margin-top: 8px;
+
+      line-height: 1.3;
     }
 
     .number {
-      font-size: 62px;
+
+      font-size: 70px;
+
       font-weight: 800;
+
       line-height: 1;
-      margin: 20px 0 12px;
+
+      margin:
+        25px 0
+        12px;
     }
 
     .police .number {
@@ -102,79 +139,148 @@
     }
 
     .status {
+
       display: inline-block;
+
       background: #f1f1f1;
+
       border-radius: 20px;
-      padding: 5px 10px;
+
+      padding:
+        6px 11px;
+
       font-size: 12px;
+
       font-weight: 700;
     }
 
     .description {
-      margin-top: 15px;
+
+      margin-top: 17px;
+
       color: #555;
-      line-height: 1.55;
+
+      line-height: 1.6;
+
+      font-size: 15px;
     }
 
     .source {
-      border-top: 1px solid #eee;
-      margin-top: 18px;
+
+      border-top:
+        1px solid #eee;
+
+      margin-top: 20px;
+
       padding-top: 15px;
+
       font-size: 13px;
+
       color: #666;
+
+      line-height: 1.5;
     }
 
-    a {
-      color: inherit;
+    .source a {
+
+      color: #333;
+
     }
 
     .section {
-      margin-top: 20px;
+
+      margin-top: 22px;
+
       background: white;
-      border: 1px solid #ddd;
-      border-radius: 18px;
-      padding: 25px;
+
+      border:
+        1px solid #ddd;
+
+      border-radius: 20px;
+
+      padding: 27px;
     }
 
     .section h2 {
+
       margin-top: 0;
+
+      font-size: 22px;
     }
 
     .important {
+
       background: #fff8e5;
-      border: 1px solid #e6d39b;
-      border-radius: 12px;
-      padding: 16px;
+
+      border:
+        1px solid #e6d39b;
+
+      border-radius: 14px;
+
+      padding: 18px;
+
       color: #5c4800;
+
+      line-height: 1.55;
+    }
+
+    .loading {
+
+      color: #888;
+
+      font-size: 18px;
     }
 
     footer {
-      margin-top: 30px;
+
+      margin-top: 35px;
+
       color: #888;
+
       font-size: 12px;
+
+      line-height: 1.5;
     }
+
   </style>
+
 </head>
+
 
 <body>
 
 <div class="container">
 
+
+  <!-- HEADER -->
+
   <header>
+
     <h1>TODAY</h1>
 
     <div class="subtitle">
-      A transparent tracker of U.S. law-enforcement
-      and immigration-enforcement activity.
+
+      A transparent tracker of U.S.
+      law-enforcement and
+      immigration-enforcement activity.
+
     </div>
 
-    <div class="date">
-      Sunday, August 23, 2026
+    <div
+      class="date"
+      id="current-date"
+    >
+      Loading date...
+
     </div>
+
   </header>
 
 
+  <!-- MAIN COUNTERS -->
+
   <div class="cards">
+
 
     <!-- POLICE -->
 
@@ -185,24 +291,34 @@
       </div>
 
       <div class="title">
-        People killed by U.S. law enforcement
+
+        People killed by
+        U.S. law enforcement
+
       </div>
 
-      <div class="number">
-        —
+      <div
+        class="number"
+        id="police-number"
+      >
+        <span class="loading">
+          Loading...
+        </span>
       </div>
 
-      <div class="status">
-        Waiting for current source data
+      <div
+        class="status"
+        id="police-status"
+      >
+        Loading source data...
       </div>
 
-      <div class="description">
-
-        We will show the number of people whose
-        deaths are recorded as occurring today.
-
-        We will never present an estimated number
-        as though it were a confirmed live count.
+      <div
+        class="description"
+        id="police-description"
+      >
+        Loading information from
+        Mapping Police Violence.
 
       </div>
 
@@ -212,7 +328,9 @@
 
         <a
           href="https://mappingpoliceviolence.org/"
-          target="_blank">
+          target="_blank"
+          rel="noopener"
+        >
           Mapping Police Violence
         </a>
 
@@ -233,22 +351,28 @@
         ICE arrests
       </div>
 
-      <div class="number">
+      <div
+        class="number"
+        id="ice-number"
+      >
         —
       </div>
 
-      <div class="status">
+      <div
+        class="status"
+        id="ice-status"
+      >
         No real-time national feed
       </div>
 
-      <div class="description">
+      <div
+        class="description"
+        id="ice-description"
+      >
 
-        ICE does not currently publish a
-        public nationwide live arrest counter.
-
-        When current data becomes available,
-        we will display the actual reporting date
-        beside the number.
+        ICE does not currently publish
+        a public nationwide real-time
+        arrest counter.
 
       </div>
 
@@ -258,7 +382,9 @@
 
         <a
           href="https://deportationdata.org/data/ice.html"
-          target="_blank">
+          target="_blank"
+          rel="noopener"
+        >
           Deportation Data Project
         </a>
 
@@ -266,27 +392,42 @@
 
     </div>
 
+
   </div>
 
 
+  <!-- EXPLANATION -->
+
   <div class="section">
 
-    <h2>How our numbers work</h2>
+    <h2>
+      How the numbers work
+    </h2>
 
     <div class="important">
 
       <strong>
-        No made-up numbers.
+        We don't make up numbers.
       </strong>
 
       <p>
-        Every number displayed by TODAY will include
-        its source and the date of the underlying data.
+
+        TODAY displays information from
+        publicly available datasets.
+
+        Every number is accompanied by
+        its source and the date of the
+        underlying data.
+
       </p>
 
       <p>
-        If a source isn't current enough to support
-        a "today" number, we'll say so.
+
+        If a source does not provide
+        current information, TODAY will
+        say so instead of presenting an
+        estimate as a live count.
+
       </p>
 
     </div>
@@ -294,45 +435,30 @@
   </div>
 
 
+  <!-- ABOUT -->
+
   <div class="section">
 
-    <h2>Coming next</h2>
+    <h2>
+      About this project
+    </h2>
 
-    <ul>
+    <p>
 
-      <li>
-        Automatic police-killing data updates
-      </li>
+      TODAY is an independent data project
+      designed to make government
+      enforcement activity easier to understand.
 
-      <li>
-        Individual incident records
-      </li>
+    </p>
 
-      <li>
-        Historical totals
-      </li>
+    <p>
 
-      <li>
-        Interactive map
-      </li>
+      The project does not claim to have
+      information that government agencies
+      or research organizations have not
+      yet published.
 
-      <li>
-        ICE arrest data
-      </li>
-
-      <li>
-        Geographic filtering
-      </li>
-
-      <li>
-        Historical charts
-      </li>
-
-      <li>
-        Alerts when new records appear
-      </li>
-
-    </ul>
+    </p>
 
   </div>
 
@@ -340,13 +466,207 @@
   <footer>
 
     TODAY is an independent data project.
-    It is not affiliated with the U.S. government,
-    ICE, Mapping Police Violence, or the Deportation
-    Data Project.
+
+    It is not affiliated with the U.S.
+    government, ICE, Mapping Police Violence,
+    or the Deportation Data Project.
 
   </footer>
 
+
 </div>
 
+
+<!-- DATA SCRIPT -->
+
+<script>
+
+async function loadData() {
+
+  /*
+   * Ask our Cloudflare API for the
+   * latest available information.
+   */
+
+  try {
+
+    const response =
+      await fetch("/api/status");
+
+    if (!response.ok) {
+
+      throw new Error(
+        "API returned " +
+        response.status
+      );
+
+    }
+
+    const data =
+      await response.json();
+
+
+    /*
+     * CURRENT DATE
+     */
+
+    const today =
+      new Date();
+
+    document.getElementById(
+      "current-date"
+    ).textContent =
+      today.toLocaleDateString(
+        "en-US",
+        {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }
+      );
+
+
+    /*
+     * POLICE DATA
+     */
+
+    const police =
+      data.police;
+
+
+    if (
+      police &&
+      police.todayCount !== null &&
+      police.todayCount !== undefined
+    ) {
+
+      document.getElementById(
+        "police-number"
+      ).textContent =
+        police.todayCount;
+
+
+      document.getElementById(
+        "police-status"
+      ).textContent =
+        "Latest published count: " +
+        police.latestPublishedDate;
+
+
+      document.getElementById(
+        "police-description"
+      ).textContent =
+        "This is the latest daily count " +
+        "published by Mapping Police Violence. " +
+        "It is not necessarily today's " +
+        "real-world count because the source " +
+        "maintains a publication lag.";
+
+    }
+
+    else {
+
+      document.getElementById(
+        "police-number"
+      ).textContent =
+        "—";
+
+
+      document.getElementById(
+        "police-status"
+      ).textContent =
+        "No current published count";
+
+
+      document.getElementById(
+        "police-description"
+      ).textContent =
+        "Mapping Police Violence does not " +
+        "currently have publicly published " +
+        "data through today's date.";
+
+    }
+
+
+    /*
+     * ICE DATA
+     */
+
+    const ice =
+      data.ice;
+
+
+    if (
+      ice &&
+      ice.value !== null &&
+      ice.value !== undefined
+    ) {
+
+      document.getElementById(
+        "ice-number"
+      ).textContent =
+        ice.value;
+
+
+      document.getElementById(
+        "ice-status"
+      ).textContent =
+        "Latest available data: " +
+        ice.dataThrough;
+
+
+      document.getElementById(
+        "ice-description"
+      ).textContent =
+        ice.note;
+
+    }
+
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "TODAY data error:",
+      error
+    );
+
+
+    document.getElementById(
+      "police-number"
+    ).textContent =
+      "—";
+
+
+    document.getElementById(
+      "police-status"
+    ).textContent =
+      "Data temporarily unavailable";
+
+
+    document.getElementById(
+      "police-description"
+    ).textContent =
+      "The website could not retrieve " +
+      "the latest source information. " +
+      "Please try again later.";
+
+  }
+
+}
+
+
+/*
+ * Start the application.
+ */
+
+loadData();
+
+</script>
+
+
 </body>
+
 </html>
