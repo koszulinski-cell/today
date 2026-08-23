@@ -2,7 +2,11 @@ export async function getPoliceData() {
   const sourceUrl = "https://mappingpoliceviolence.org/";
 
   try {
-    const response = await fetch(sourceUrl);
+    const response = await fetch(sourceUrl, {
+      headers: {
+        "User-Agent": "TODAY-data-tracker/1.0"
+      }
+    });
 
     if (!response.ok) {
       throw new Error(`MPV returned HTTP ${response.status}`);
@@ -11,15 +15,14 @@ export async function getPoliceData() {
     const html = await response.text();
 
     /*
-     * MPV publishes daily entries in the page like:
+     * Find every daily entry published by MPV.
      *
-     * Police killed 1 people on August 07, 2026
-     *
-     * We extract those entries from the public page.
+     * Example:
+     * Police killed 5 people on January 01, 2026
      */
 
     const pattern =
-      /Police killed\s+(\d+)\s+people on ([A-Za-z]+ \d{2}, \d{4})/g;
+      /Police killed\s+(\d+)\s+people on\s+([A-Za-z]+)\s+(\d{2}),\s+(\d{4})/gi;
 
     const records = [];
 
@@ -28,7 +31,7 @@ export async function getPoliceData() {
     while ((match = pattern.exec(html)) !== null) {
       records.push({
         count: Number(match[1]),
-        date: match[2]
+        date: `${match[2]} ${match[3]}, ${match[4]}`
       });
     }
 
@@ -38,14 +41,10 @@ export async function getPoliceData() {
         sourceUrl,
         todayCount: null,
         status: "no_daily_data_found",
-        note: "The MPV page format may have changed."
+        recordsFound: 0,
+        note: "MPV's page format could not be read."
       };
     }
-
-    /*
-     * The last daily record on the page is the newest
-     * published daily count.
-     */
 
     const latest = records[records.length - 1];
 
@@ -59,8 +58,10 @@ export async function getPoliceData() {
 
       status: "latest_published_count",
 
+      recordsFound: records.length,
+
       note:
-        "This is the latest published daily count from Mapping Police Violence. It is not necessarily today's real-world count because MPV intentionally maintains a publication lag."
+        "This is the latest daily count published by Mapping Police Violence. It is not necessarily the count for today's calendar date."
     };
 
   } catch (error) {
