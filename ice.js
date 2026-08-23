@@ -1,28 +1,38 @@
 // ice.js
 //
-// ICE arrest data source:
-// Deportation Data Project
+// ICE arrest data from the Deportation Data Project.
 //
 // IMPORTANT:
-// This is NOT a real-time ICE arrest feed.
-// The source dataset is updated periodically and may lag behind
-// the current date.
+// The Deportation Data Project does NOT provide a real-time ICE
+// nationwide arrest feed.
+//
+// Current public release covers ICE enforcement through early
+// March 2026.
+//
+// We therefore display the latest available dataset date rather
+// than pretending it represents today's arrests.
 
-const ICE_DATA_URL =
-  "https://github.com/deportationdata/ice/raw/refs/heads/main/data/arrests-latest.parquet";
-
-const ICE_SOURCE_URL =
-  "https://deportationdata.org/data/processed/ice.html";
+const ICE_SOURCE =
+  "https://deportationdata.org/data/ice.html";
 
 export async function getIceStatus() {
+
   return {
+
     source: "Deportation Data Project",
-    sourceUrl: ICE_SOURCE_URL,
-    status: "latest_available",
+
+    sourceUrl: ICE_SOURCE,
+
     value: null,
+
     label: "Latest available",
+
+    dataThrough: "March 10, 2026",
+
+    status: "latest_available",
+
     note:
-      "ICE does not publish a public nationwide real-time arrest feed. " +
-      "The Deportation Data Project provides periodically updated individual-level data."
+      "The Deportation Data Project's latest public ICE arrest dataset covers enforcement through March 10, 2026. " +
+      "ICE does not publish a public nationwide real-time arrest feed, so a verified August 2026 nationwide daily count is not available from this source."
   };
 }
