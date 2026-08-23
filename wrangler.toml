@@ -1,7 +1,5 @@
-name = "us-enforcement-tracker"
-
-main = "worker.js"
-
+name = "today"
+main = "police.js"
 compatibility_date = "2026-08-23"
 
 [assets]
