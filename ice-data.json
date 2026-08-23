@@ -1,10 +1,13 @@
 {
-  "source": "Deportation Data Project",
-  "sourceUrl": "https://deportationdata.org/data/ice.html",
-  "dataset": "arrests-latest",
-  "dataThrough": "2026-03-10",
-  "latestAvailableDate": "2026-03-10",
-  "latestAvailableCount": 1,
-  "status": "latest_available_day",
-  "note": "Count calculated from the official ICE arrests dataset."
+  "updated": "2026-08-23T00:00:00Z",
+  "ice": {
+    "value": 1,
+    "label": "Latest available",
+    "latestDate": "2026-03-11",
+    "source": "Deportation Data Project",
+    "sourceUrl": "https://deportationdata.org/data/ice.html",
+    "records": 713464,
+    "futureRecordsIgnored": 1,
+    "note": "Count represents records in the latest available arrest date in the public ICE dataset. Future-dated records are excluded."
+  }
 }
