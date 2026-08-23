@@ -1,672 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>TODAY — Government Enforcement Tracker</title>
+  <title>U.S. Enforcement Tracker</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      background: #f4f4f1;
-      color: #171717;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 40px 20px 70px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f5f5;
+      color: #111;
     }
 
     header {
-      margin-bottom: 35px;
+      background: #111;
+      color: white;
+      padding: 28px 20px;
+      text-align: center;
     }
 
-    h1 {
-      font-size: 56px;
-      letter-spacing: -4px;
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    header p {
       margin: 0;
-    }
-
-    .subtitle {
-      color: #666;
-      font-size: 17px;
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-
-    .date {
-      color: #888;
-      font-size: 13px;
-      margin-top: 12px;
-    }
-
-    .cards {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
-
-      gap: 20px;
-    }
-
-    @media(max-width: 700px) {
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-    .card {
-
-      background: white;
-
-      border: 1px solid #ddd;
-
-      border-radius: 20px;
-
-      padding: 28px;
-
-      box-shadow:
-        0 4px 15px rgba(0,0,0,.05);
-    }
-
-    .category {
-
-      font-size: 12px;
-
-      font-weight: 800;
-
-      text-transform: uppercase;
-
-      letter-spacing: .08em;
-
-      color: #777;
-    }
-
-    .title {
-
-      font-size: 21px;
-
-      font-weight: 700;
-
-      margin-top: 8px;
-
-      line-height: 1.3;
-    }
-
-    .number {
-
-      font-size: 70px;
-
-      font-weight: 800;
-
-      line-height: 1;
-
-      margin:
-        25px 0
-        12px;
-    }
-
-    .police .number {
-      color: #b42318;
-    }
-
-    .ice .number {
-      color: #9a5a00;
-    }
-
-    .status {
-
-      display: inline-block;
-
-      background: #f1f1f1;
-
-      border-radius: 20px;
-
-      padding:
-        6px 11px;
-
-      font-size: 12px;
-
-      font-weight: 700;
-    }
-
-    .description {
-
-      margin-top: 17px;
-
-      color: #555;
-
-      line-height: 1.6;
-
+      color: #ccc;
       font-size: 15px;
     }
 
-    .source {
+    main {
+      max-width: 1000px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
 
-      border-top:
-        1px solid #eee;
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 22px;
+    }
 
-      margin-top: 20px;
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
 
-      padding-top: 15px;
+    .card h2 {
+      margin-top: 0;
+      font-size: 19px;
+    }
 
-      font-size: 13px;
+    .number {
+      font-size: 52px;
+      font-weight: bold;
+      margin: 20px 0 8px;
+    }
 
-      color: #666;
+    .date {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 18px;
+    }
 
+    .note {
+      font-size: 14px;
       line-height: 1.5;
+      color: #555;
+      border-top: 1px solid #ddd;
+      padding-top: 16px;
+    }
+
+    .source {
+      margin-top: 16px;
+      font-size: 13px;
     }
 
     .source a {
-
-      color: #333;
-
+      color: #0645ad;
     }
 
-    .section {
-
-      margin-top: 22px;
-
-      background: white;
-
-      border:
-        1px solid #ddd;
-
-      border-radius: 20px;
-
-      padding: 27px;
+    .updated {
+      text-align: center;
+      margin-top: 30px;
+      color: #666;
+      font-size: 13px;
     }
 
-    .section h2 {
-
-      margin-top: 0;
-
-      font-size: 22px;
-    }
-
-    .important {
-
-      background: #fff8e5;
-
-      border:
-        1px solid #e6d39b;
-
-      border-radius: 14px;
-
-      padding: 18px;
-
-      color: #5c4800;
-
-      line-height: 1.55;
-    }
-
-    .loading {
-
-      color: #888;
-
-      font-size: 18px;
-    }
-
-    footer {
-
-      margin-top: 35px;
-
-      color: #888;
-
-      font-size: 12px;
-
+    .warning {
+      background: #fff8dc;
+      border: 1px solid #ead78b;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 25px;
+      font-size: 14px;
       line-height: 1.5;
     }
 
+    footer {
+      text-align: center;
+      padding: 35px 20px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 25px;
+      }
+
+      .number {
+        font-size: 44px;
+      }
+    }
   </style>
-
 </head>
-
 
 <body>
 
-<div class="container">
+<header>
+  <h1>U.S. Enforcement Tracker</h1>
+  <p>Tracking publicly available data on police killings and ICE arrests</p>
+</header>
 
+<main>
 
-  <!-- HEADER -->
-
-  <header>
-
-    <h1>TODAY</h1>
-
-    <div class="subtitle">
-
-      A transparent tracker of U.S.
-      law-enforcement and
-      immigration-enforcement activity.
-
-    </div>
-
-    <div
-      class="date"
-      id="current-date"
-    >
-      Loading date...
-
-    </div>
-
-  </header>
-
-
-  <!-- MAIN COUNTERS -->
+  <div class="warning">
+    <strong>Important:</strong>
+    These are not necessarily real-time counts. Both sources have publication
+    delays. The date shown with each number tells you how current the underlying
+    data actually are.
+  </div>
 
   <div class="cards">
 
-
     <!-- POLICE -->
+    <section class="card">
+      <h2>Police killings</h2>
 
-    <div class="card police">
+      <div id="police-number" class="number">Loading...</div>
 
-      <div class="category">
-        Law enforcement
+      <div id="police-date" class="date">
+        Checking latest available data...
       </div>
 
-      <div class="title">
-
-        People killed by
-        U.S. law enforcement
-
-      </div>
-
-      <div
-        class="number"
-        id="police-number"
-      >
-        <span class="loading">
-          Loading...
-        </span>
-      </div>
-
-      <div
-        class="status"
-        id="police-status"
-      >
-        Loading source data...
-      </div>
-
-      <div
-        class="description"
-        id="police-description"
-      >
-        Loading information from
-        Mapping Police Violence.
-
-      </div>
+      <div id="police-note" class="note"></div>
 
       <div class="source">
-
         Source:
-
         <a
           href="https://mappingpoliceviolence.org/"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           Mapping Police Violence
         </a>
-
       </div>
-
-    </div>
-
+    </section>
 
     <!-- ICE -->
+    <section class="card">
+      <h2>ICE arrests</h2>
 
-    <div class="card ice">
+      <div id="ice-number" class="number">Loading...</div>
 
-      <div class="category">
-        Immigration
+      <div id="ice-date" class="date">
+        Checking latest available data...
       </div>
 
-      <div class="title">
-        ICE arrests
-      </div>
-
-      <div
-        class="number"
-        id="ice-number"
-      >
-        —
-      </div>
-
-      <div
-        class="status"
-        id="ice-status"
-      >
-        No real-time national feed
-      </div>
-
-      <div
-        class="description"
-        id="ice-description"
-      >
-
-        ICE does not currently publish
-        a public nationwide real-time
-        arrest counter.
-
-      </div>
+      <div id="ice-note" class="note"></div>
 
       <div class="source">
-
         Source:
-
         <a
           href="https://deportationdata.org/data/ice.html"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           Deportation Data Project
         </a>
-
       </div>
-
-    </div>
-
+    </section>
 
   </div>
 
+  <div id="updated" class="updated"></div>
 
-  <!-- EXPLANATION -->
+</main>
 
-  <div class="section">
-
-    <h2>
-      How the numbers work
-    </h2>
-
-    <div class="important">
-
-      <strong>
-        We don't make up numbers.
-      </strong>
-
-      <p>
-
-        TODAY displays information from
-        publicly available datasets.
-
-        Every number is accompanied by
-        its source and the date of the
-        underlying data.
-
-      </p>
-
-      <p>
-
-        If a source does not provide
-        current information, TODAY will
-        say so instead of presenting an
-        estimate as a live count.
-
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <!-- ABOUT -->
-
-  <div class="section">
-
-    <h2>
-      About this project
-    </h2>
-
-    <p>
-
-      TODAY is an independent data project
-      designed to make government
-      enforcement activity easier to understand.
-
-    </p>
-
-    <p>
-
-      The project does not claim to have
-      information that government agencies
-      or research organizations have not
-      yet published.
-
-    </p>
-
-  </div>
-
-
-  <footer>
-
-    TODAY is an independent data project.
-
-    It is not affiliated with the U.S.
-    government, ICE, Mapping Police Violence,
-    or the Deportation Data Project.
-
-  </footer>
-
-
-</div>
-
-
-<!-- DATA SCRIPT -->
+<footer>
+  This site reports data from publicly available research datasets.
+  It does not claim to provide a real-time government count.
+</footer>
 
 <script>
-
 async function loadData() {
-
-  /*
-   * Ask our Cloudflare API for the
-   * latest available information.
-   */
-
   try {
-
-    const response =
-      await fetch("/api/status");
+    const response = await fetch("/api/status");
 
     if (!response.ok) {
-
-      throw new Error(
-        "API returned " +
-        response.status
-      );
-
+      throw new Error("API request failed");
     }
 
-    const data =
-      await response.json();
-
+    const data = await response.json();
 
     /*
-     * CURRENT DATE
+     * POLICE
      */
+    const police = data.police || {};
 
-    const today =
-      new Date();
+    const policeNumber =
+      document.getElementById("police-number");
 
-    document.getElementById(
-      "current-date"
-    ).textContent =
-      today.toLocaleDateString(
-        "en-US",
-        {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        }
-      );
+    const policeDate =
+      document.getElementById("police-date");
 
+    const policeNote =
+      document.getElementById("police-note");
+
+    if (police.todayCount !== null &&
+        police.todayCount !== undefined) {
+
+      policeNumber.textContent = police.todayCount;
+
+      policeDate.textContent =
+        police.date
+          ? "Data for " + police.date
+          : "Latest available";
+
+    } else if (police.value !== null &&
+               police.value !== undefined) {
+
+      policeNumber.textContent = police.value;
+
+      policeDate.textContent =
+        police.date
+          ? "Data for " + police.date
+          : "Latest available";
+
+    } else {
+
+      policeNumber.textContent = "—";
+      policeDate.textContent = "Latest available data";
+    }
+
+    policeNote.textContent =
+      police.note ||
+      "Mapping Police Violence maintains a publication delay so incidents can be reviewed before being added to the public dataset.";
 
     /*
-     * POLICE DATA
+     * ICE
      */
+    const ice = data.ice || {};
 
-    const police =
-      data.police;
+    const iceNumber =
+      document.getElementById("ice-number");
 
+    const iceDate =
+      document.getElementById("ice-date");
 
-    if (
-      police &&
-      police.todayCount !== null &&
-      police.todayCount !== undefined
-    ) {
+    const iceNote =
+      document.getElementById("ice-note");
 
-      document.getElementById(
-        "police-number"
-      ).textContent =
-        police.todayCount;
+    if (ice.value !== null &&
+        ice.value !== undefined) {
 
+      iceNumber.textContent = ice.value;
 
-      document.getElementById(
-        "police-status"
-      ).textContent =
-        "Latest published count: " +
-        police.latestPublishedDate;
+    } else {
 
-
-      document.getElementById(
-        "police-description"
-      ).textContent =
-        "This is the latest daily count " +
-        "published by Mapping Police Violence. " +
-        "It is not necessarily today's " +
-        "real-world count because the source " +
-        "maintains a publication lag.";
-
+      iceNumber.textContent = "—";
     }
 
-    else {
+    if (ice.dataThrough) {
 
-      document.getElementById(
-        "police-number"
-      ).textContent =
-        "—";
+      iceDate.textContent =
+        "Data through " + ice.dataThrough;
 
+    } else {
 
-      document.getElementById(
-        "police-status"
-      ).textContent =
-        "No current published count";
-
-
-      document.getElementById(
-        "police-description"
-      ).textContent =
-        "Mapping Police Violence does not " +
-        "currently have publicly published " +
-        "data through today's date.";
-
+      iceDate.textContent =
+        ice.label || "Latest available data";
     }
 
+    iceNote.textContent =
+      ice.note ||
+      "ICE does not publish a public nationwide real-time arrest feed.";
 
     /*
-     * ICE DATA
+     * API update time
      */
+    if (data.updated) {
 
-    const ice =
-      data.ice;
-
-
-    if (
-      ice &&
-      ice.value !== null &&
-      ice.value !== undefined
-    ) {
-
-      document.getElementById(
-        "ice-number"
-      ).textContent =
-        ice.value;
-
-
-      document.getElementById(
-        "ice-status"
-      ).textContent =
-        "Latest available data: " +
-        ice.dataThrough;
-
-
-      document.getElementById(
-        "ice-description"
-      ).textContent =
-        ice.note;
-
+      document.getElementById("updated").textContent =
+        "Data checked: " +
+        new Date(data.updated).toLocaleString();
     }
 
+  } catch (error) {
 
+    console.error(error);
+
+    document.getElementById("police-number").textContent = "—";
+    document.getElementById("ice-number").textContent = "—";
+
+    document.getElementById("police-date").textContent =
+      "Unable to load data";
+
+    document.getElementById("ice-date").textContent =
+      "Unable to load data";
   }
-
-  catch (error) {
-
-    console.error(
-      "TODAY data error:",
-      error
-    );
-
-
-    document.getElementById(
-      "police-number"
-    ).textContent =
-      "—";
-
-
-    document.getElementById(
-      "police-status"
-    ).textContent =
-      "Data temporarily unavailable";
-
-
-    document.getElementById(
-      "police-description"
-    ).textContent =
-      "The website could not retrieve " +
-      "the latest source information. " +
-      "Please try again later.";
-
-  }
-
 }
 
-
-/*
- * Start the application.
- */
-
 loadData();
-
 </script>
 
-
 </body>
-
 </html>
