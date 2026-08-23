@@ -1,21 +1,79 @@
 export async function getPoliceData() {
-
   const sourceUrl = "https://mappingpoliceviolence.org/";
 
-  return {
-    source: "Mapping Police Violence",
+  try {
+    const response = await fetch(sourceUrl);
 
-    sourceUrl: sourceUrl,
+    if (!response.ok) {
+      throw new Error(`MPV returned HTTP ${response.status}`);
+    }
 
-    sourceLastUpdated: "2026-08-07",
+    const html = await response.text();
 
-    todayCount: null,
+    /*
+     * MPV publishes daily entries in the page like:
+     *
+     * Police killed 1 people on August 07, 2026
+     *
+     * We extract those entries from the public page.
+     */
 
-    latestPublishedDate: "2026-08-07",
+    const pattern =
+      /Police killed\s+(\d+)\s+people on ([A-Za-z]+ \d{2}, \d{4})/g;
 
-    status: "latest_published_data",
+    const records = [];
 
-    note:
-      "Mapping Police Violence intentionally maintains a publication lag while incidents are reviewed. The latest public data currently runs through August 7, 2026."
-  };
+    let match;
+
+    while ((match = pattern.exec(html)) !== null) {
+      records.push({
+        count: Number(match[1]),
+        date: match[2]
+      });
+    }
+
+    if (records.length === 0) {
+      return {
+        source: "Mapping Police Violence",
+        sourceUrl,
+        todayCount: null,
+        status: "no_daily_data_found",
+        note: "The MPV page format may have changed."
+      };
+    }
+
+    /*
+     * The last daily record on the page is the newest
+     * published daily count.
+     */
+
+    const latest = records[records.length - 1];
+
+    return {
+      source: "Mapping Police Violence",
+      sourceUrl,
+
+      todayCount: latest.count,
+
+      latestPublishedDate: latest.date,
+
+      status: "latest_published_count",
+
+      note:
+        "This is the latest published daily count from Mapping Police Violence. It is not necessarily today's real-world count because MPV intentionally maintains a publication lag."
+    };
+
+  } catch (error) {
+
+    return {
+      source: "Mapping Police Violence",
+      sourceUrl,
+
+      todayCount: null,
+
+      status: "source_error",
+
+      error: error.message
+    };
+  }
 }
