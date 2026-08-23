@@ -1,16 +1,11 @@
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-
-    // Home page
-    if (url.pathname === "/" || url.pathname === "") {
-      return new Response(`
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Today</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -30,7 +25,7 @@ export default {
       border-radius: 12px;
       padding: 25px;
       margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     }
 
     .number {
@@ -62,70 +57,66 @@ export default {
   <div class="card">
     <h2>ICE arrests</h2>
 
-    <div class="number" id="ice-count">Loading...</div>
+    <div class="number" id="ice-count">
+      Loading...
+    </div>
 
-    <div class="label" id="ice-date"></div>
+    <div class="label" id="ice-date">
+    </div>
 
     <div class="source">
       Source:
       <a
         href="https://deportationdata.org/data/ice.html"
         target="_blank"
+        rel="noopener"
       >
         Deportation Data Project
       </a>
     </div>
   </div>
 
-<script>
-async function loadData() {
-  try {
-    const response = await fetch("/ice-data.json?x=" + Date.now());
+  <script>
+    async function loadICE() {
+      try {
+        const response = await fetch("/api/status");
 
-    if (!response.ok) {
-      throw new Error("Could not load ICE data");
+        if (!response.ok) {
+          throw new Error("Could not load status");
+        }
+
+        const data = await response.json();
+        const ice = data.ice;
+
+        if (ice && ice.value !== null && ice.value !== undefined) {
+          document.getElementById("ice-count").textContent =
+            ice.value.toLocaleString();
+        } else {
+          document.getElementById("ice-count").textContent =
+            "Unavailable";
+        }
+
+        if (ice && ice.latestDate) {
+          document.getElementById("ice-date").textContent =
+            "Latest available arrest date: " + ice.latestDate;
+        } else {
+          document.getElementById("ice-date").textContent =
+            "Latest available date unavailable";
+        }
+
+      } catch (error) {
+        console.error(error);
+
+        document.getElementById("ice-count").textContent =
+          "Unavailable";
+
+        document.getElementById("ice-date").textContent =
+          "Could not load ICE data.";
+      }
     }
 
-    const data = await response.json();
-
-    const ice = data.ice;
-
-    document.getElementById("ice-count").textContent =
-      ice.value ?? "Unavailable";
-
-    document.getElementById("ice-date").textContent =
-      ice.latestDate
-        ? "Latest available arrest date: " + ice.latestDate
-        : "Latest available date unavailable";
-
-  } catch (error) {
-    console.error(error);
-
-    document.getElementById("ice-count").textContent =
-      "Unavailable";
-
-    document.getElementById("ice-date").textContent =
-      "Could not load ICE data.";
-  }
-}
-
-loadData();
-</script>
+    loadICE();
+  </script>
 
 </body>
 </html>
-      `, {
-        headers: {
-          "content-type": "text/html; charset=UTF-8"
-        }
-      });
-    }
-
-    // Allow the JSON file to be requested directly
-    if (url.pathname === "/ice-data.json") {
-      return env.ASSETS.fetch(request);
-    }
-
-    return new Response("Not found", { status: 404 });
-  }
-};
