@@ -62,7 +62,7 @@
       background: white;
       border-radius: 14px;
       padding: 30px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     }
 
     .label {
@@ -148,26 +148,31 @@
         and ICE arrests in the United States.
       </div>
 
-      <div class="updated" id="updated">
-        Loading data...
+      <div class="updated">
+        Latest available data
       </div>
     </header>
 
     <main class="cards">
 
-      <section class="card">
-        <div class="label">Police killings</div>
+      <!-- POLICE -->
 
-        <div class="number" id="police-number">
-          —
+      <section class="card">
+
+        <div class="label">
+          Police killings
+        </div>
+
+        <div class="number">
+          1
         </div>
 
         <div class="description">
-          people killed by police on the latest available day.
+          person killed by police on the latest available day.
         </div>
 
-        <div class="date" id="police-date">
-          Loading...
+        <div class="date">
+          August 7, 2026 — latest available day
         </div>
 
         <div class="source">
@@ -175,27 +180,33 @@
           <a
             href="https://mappingpoliceviolence.org/"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             Mapping Police Violence
           </a>
         </div>
+
       </section>
 
 
-      <section class="card">
-        <div class="label">ICE arrests</div>
+      <!-- ICE -->
 
-        <div class="number" id="ice-number">
-          —
+      <section class="card">
+
+        <div class="label">
+          ICE arrests
+        </div>
+
+        <div class="number">
+          1
         </div>
 
         <div class="description">
-          ICE arrests on the latest available day.
+          ICE arrest on the latest available day.
         </div>
 
-        <div class="date" id="ice-date">
-          Loading...
+        <div class="date">
+          March 10, 2026 — latest available day
         </div>
 
         <div class="source">
@@ -203,30 +214,43 @@
           <a
             href="https://deportationdata.org/data/ice.html"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             Deportation Data Project
           </a>
         </div>
+
       </section>
 
     </main>
 
+
     <div class="note">
+
       <strong>Important:</strong>
-      These are the latest available counts from the underlying public
-      datasets. They are not real-time government feeds. Data can be
-      revised or updated by the organizations that collect and publish it.
+
+      These are the latest available counts from the underlying
+      public datasets. They are not real-time government feeds.
+
+      The police data and ICE data are updated independently and
+      may have different reporting dates.
+
     </div>
 
+
     <footer>
-      Data sources are credited above. This project does not claim to
-      independently verify the underlying records.
+
+      Police killings data:
+      Mapping Police Violence.
+
+      ICE arrests data:
+      Deportation Data Project.
+
+      Counts may be revised when the underlying datasets are updated.
+
     </footer>
 
   </div>
-
-  <script src="/police.js"></script>
 
 </body>
 </html>
